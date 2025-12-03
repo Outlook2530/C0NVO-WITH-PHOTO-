@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Facebook Message Sender</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+        }
+        
+        .login-body {
+            padding: 40px;
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--gradient-start);
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .input-group-text {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-right: none;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer-links a {
+            color: var(--gradient-start);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--gradient-end);
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, white 0%, #f8f9fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-badge {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 5px;
+            display: inline-block;
+        }
+        
+        .system-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <h2>Facebook Message Sender</h2>
+            <p>Cookie-based messaging system</p>
+            <div class="mt-3">
+                <span class="feature-badge">🔐 Cookie Auth</span>
+                <span class="feature-badge">⚡ Fast</span>
+                <span class="feature-badge">📊 Analytics</span>
+            </div>
+        </div>
+        
+        <div class="login-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {% if category == 'success' %}
+                                <i class="fas fa-check-circle me-2"></i>
+                            {% elif category == 'danger' %}
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                            {% elif category == 'warning' %}
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle me-2"></i>
+                            {% endif %}
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="mb-4">
+                    <label for="username" class="form-label fw-bold">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" class="form-control" id="username" name="username" 
+                               placeholder="Enter your username" required autofocus>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="form-label fw-bold">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="Enter your password" required>
+                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                
+                <button type="submit" class="btn btn-login mb-3">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login to Dashboard
+                </button>
+            </form>
+            
+            <div class="footer-links">
+                <div class="system-info">
+                    <p class="mb-1"><strong>Default Admin Credentials:</strong></p>
+                    <p class="mb-1">Username: <code>admin</code></p>
+                    <p class="mb-0">Password: <code>AXSHU143</code></p>
+                </div>
+                
+                <p class="mb-0 mt-3">
+                    <small>
+                        &copy; 2024 Developed by 
+                        <a href="https://www.facebook.com/profile.php?id=61574791744025" target="_blank">AXSHU</a>
+                    </small>
+                </p>
+                <p class="mb-0">
+                    <small>Version 2.0.0 | Cookie-based System</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        document.getElementById('username').focus();
+    </script>
+</body>
+</html>
