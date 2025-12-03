@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Task - Facebook Message Sender</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .required:after {
+            content: " *";
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="fas fa-paper-plane me-2"></i>FB Message Sender
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Create New Messaging Task</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="POST" enctype="multipart/form-data">
+                            <!-- Target Information -->
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required">Facebook Thread/Conversation ID</label>
+                                    <input type="text" class="form-control" name="threadId" 
+                                           placeholder="e.g., 1000123456789" required>
+                                    <div class="form-text">The ID of the conversation you want to message</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Thread Name (Optional)</label>
+                                    <input type="text" class="form-control" name="threadName" 
+                                           placeholder="e.g., John's Conversation">
+                                    <div class="form-text">For your reference only</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cookies Section -->
+                            <div class="mb-4">
+                                <label class="form-label required">Facebook Cookies</label>
+                                <textarea class="form-control" name="cookies" rows="6" 
+                                          placeholder="Paste Facebook cookies here...
+Format:
+c_user=100123456789;
+xs=45:AbCdEfGhIjKlMnOp:9876543210;
+fr=1AbCdEfGhIjKlMnOp.9876543210.9876543210;
+datr=AbCdEfGhIjKlMnOp;
+sb=AbCdEfGhIjKlMnOp" required></textarea>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Paste cookies from Facebook. You can add multiple sets separated by &quot;---&quot;
+                                </div>
+                            </div>
+                            
+                            <!-- Messages Section -->
+                            <div class="mb-4">
+                                <label class="form-label required">Messages</label>
+                                <div class="mb-3">
+                                    <label class="form-label">Upload Messages File (TXT)</label>
+                                    <input type="file" class="form-control" name="messagesFile" accept=".txt">
+                                    <div class="form-text">Upload a .txt file with one message per line</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Or Enter Messages Manually</label>
+                                    <textarea class="form-control" name="messages" rows="6" 
+                                              placeholder="Enter one message per line...
+Hello!
+How are you?
+This is a test message."></textarea>
+                                    <div class="form-text">Enter one message per line (at least one message required)</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Task Settings -->
+                            <div class="row mb-4">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label required">Interval (Seconds)</label>
+                                    <input type="number" class="form-control" name="interval" 
+                                           value="5" min="1" max="300" required>
+                                    <div class="form-text">Delay between messages</div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Message Prefix (Optional)</label>
+                                    <input type="text" class="form-control" name="prefix" 
+                                           placeholder="e.g., [BOT]">
+                                    <div class="form-text">Added before each message</div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Max Messages</label>
+                                    <input type="number" class="form-control" name="maxMessages" 
+                                           value="0" min="0">
+                                    <div class="form-text">0 = unlimited</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Info -->
+                            <div class="mb-4">
+                                <label class="form-label">Target Name (Optional)</label>
+                                <input type="text" class="form-control" name="targetName" 
+                                       placeholder="e.g., John Doe">
+                                <div class="form-text">For your reference only</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Description (Optional)</label>
+                                <textarea class="form-control" name="description" rows="3" 
+                                          placeholder="Task description..."></textarea>
+                            </div>
+                            
+                            <!-- Submit -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-rocket me-2"></i>Start Messaging Task
+                                </button>
+                                <a href="/dashboard" class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="card mt-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>How to Get Facebook Conversation ID</h5>
+                    </div>
+                    <div class="card-body">
+                        <ol>
+                            <li>Go to Facebook Messenger</li>
+                            <li>Open the conversation you want to target</li>
+                            <li>Look at the URL: <code>https://www.facebook.com/messages/t/1000123456789</code></li>
+                            <li>The number after <code>/t/</code> is the Conversation ID</li>
+                        </ol>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Note:</strong> Make sure you have permission to message the recipient.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
